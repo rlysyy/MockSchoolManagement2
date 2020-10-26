@@ -1,4 +1,5 @@
-﻿using MockSchoolManagement.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using MockSchoolManagement.Models;
 using MockSchoolManagement.Models.EnumTypes;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,22 +19,44 @@ namespace MockSchoolManagement.DataRepositories
             new Student() { Id = 3, Name = "赵六", Major = MajorEnum.ElectronicCommerce, Email = "zhaoliu@52abp.com" },
             };
         }
-
-        public Student Add(Student student)
+ 
+        public Student Delete(int id)
         {
-            student.Id = _studentList.Max(s => s.Id) + 1;
-            _studentList.Add(student);
+            Student student = _studentList.FirstOrDefault(s => s.Id == id);
+            if (student != null)
+            {
+                _studentList.Remove(student);
+            }
             return student;
         }
 
         public IEnumerable<Student> GetAllStudents()
         {
             return _studentList;
-        }
+        }       
 
-        public Student GetStudent(int id)
+        public Student GetStudentById(int id)
         {
             return _studentList.FirstOrDefault(a => a.Id == id);
+        }
+
+        public Student Insert(Student student)
+        {
+            student.Id = _studentList.Max(s => s.Id) + 1;
+            _studentList.Add(student);
+            return student;
+        }
+
+        public Student Update(Student updateStudent)
+        {
+            Student student = _studentList.FirstOrDefault(s => s.Id == updateStudent.Id);
+            if (student != null)
+            {
+                student.Name = updateStudent.Name;
+                student.Email = updateStudent.Email;
+                student.Major = updateStudent.Major;
+            }
+            return student;
         }
     }
 }

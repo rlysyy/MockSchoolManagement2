@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace MockSchoolManagement.Controllers
 {
-     
-    public class HomeController:Controller
+
+    public class HomeController : Controller
     {
         private readonly IStudentRepository _studentRepository;
 
@@ -19,7 +19,7 @@ namespace MockSchoolManagement.Controllers
         {
             _studentRepository = studentRepository;
         }
-        
+
         public ViewResult Index()
         {
             //查询所有的学生信息
@@ -28,13 +28,12 @@ namespace MockSchoolManagement.Controllers
             return View(model);
         }
 
-        
         public ViewResult Details(int id)
         {
-             //实例化HomeDetailsViewModel并存储Student详细信息和PageTitle
+            //实例化HomeDetailsViewModel并存储Student详细信息和PageTitle
             HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
             {
-                Student = _studentRepository.GetStudent(id),
+                Student = _studentRepository.GetStudentById(id),
                 PageTitle = "学生详情"
             };
 
@@ -55,8 +54,8 @@ namespace MockSchoolManagement.Controllers
             if (ModelState.IsValid)
             {
 
-                Student newStudent = _studentRepository.Add(student);
-            return RedirectToAction("Details", new { id = newStudent.Id }); //验证依赖注入三种服务差异的时候，这里需要注释掉
+                Student newStudent = _studentRepository.Insert(student);
+                return RedirectToAction("Details", new { id = newStudent.Id }); //验证依赖注入三种服务差异的时候，这里需要注释掉
             }
             return View();
         }

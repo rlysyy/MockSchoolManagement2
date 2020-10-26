@@ -24,5 +24,7 @@ namespace MockSchoolManagement.Models
        ErrorMessage = "邮箱的格式不正确")]
         [Required(ErrorMessage = "请输入邮箱地址,它不能为空")]
         public string Email { get; set; }
+
+        public string PhotoPath { get; set; }
     }
 }

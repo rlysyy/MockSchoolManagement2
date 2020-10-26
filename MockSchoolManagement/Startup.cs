@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MockSchoolManagement.DataRepositories;
+using MockSchoolManagement.Infrastructure;
 using MockSchoolManagement.Models;
 
 namespace MockSchoolManagement
@@ -27,7 +29,9 @@ namespace MockSchoolManagement
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews(a=>a.EnableEndpointRouting=false);
-            services.AddSingleton<IStudentRepository, MockStudentRepository>();
+            services.AddScoped<IStudentRepository, SQLStudentRepository>();
+            services.AddDbContextPool<AppDbContext>(
+                options => options.UseSqlServer(_configuration.GetConnectionString("MockStudentDBConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
