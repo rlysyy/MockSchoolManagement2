@@ -38,19 +38,16 @@ namespace MockSchoolManagement
                 app.UseDeveloperExceptionPage();
             }
 
-            //添加默认文件中间件
-            app.UseDefaultFiles();
-
-            app.UseMvcWithDefaultRoute();
+            //使用纯静态文件支持的中间件，而不使用带有终端中间件
+            app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
